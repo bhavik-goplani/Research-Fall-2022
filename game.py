@@ -16,14 +16,22 @@ def rps(prob_rock, prob_paper, prob_scissor, user_input):
 
     print('Computer is making a move...')
     time.sleep(3)
-
-    comp_move = float(random.randint(1,100)/100)
-    if 1 <= comp_move <= prob_rock:
-        comp_move = 0
-    elif prob_rock < comp_move <= prob_paper + prob_rock:
-        comp_move = 1
-    elif prob_paper + prob_rock < comp_move <= prob_scissor +prob_paper + prob_rock:
-        comp_move = 2
+    if prob_rock == prob_paper == prob_scissor:
+        comp_move = float(random.randint(1,99)/100)
+        if 0.01 <= comp_move <= prob_rock:
+            comp_move = 0
+        elif prob_rock < comp_move <= prob_paper + prob_rock:
+            comp_move = 1
+        elif prob_paper + prob_rock < comp_move <= prob_scissor +prob_paper + prob_rock:
+            comp_move = 2
+    else:
+        comp_move = float(random.randint(1,100)/100)
+        if 0.01 <= comp_move <= prob_rock:
+            comp_move = 0
+        elif prob_rock < comp_move <= prob_paper + prob_rock:
+            comp_move = 1
+        elif prob_paper + prob_rock < comp_move <= prob_scissor +prob_paper + prob_rock:
+            comp_move = 2
 
 # Print the computer move
     print("Computer chooses ", game_map[comp_move].upper())
@@ -44,7 +52,7 @@ def main():
 
     while True:
         print("\n\nSelect an option: ")
-        print('Here are your choices (default probabilities are 0.33 for each and enter probabilities between 0 and 1 upto 2 decimal places)\n\n 1. Change the probability of getting a rock\n 2. Change the probability of getting a paper\n 3. Change the probability of getting a scissor\n 4. Enter your choice (rock/paper/scissor)\n 5. Exit\n')
+        print('Here are your choices (default probabilities are 0.33 for each and enter probabilities between 0 and 1 upto 2 decimal places)\n\n 1. Change the probability of getting a rock, paper and scissor & Enter your choice (rock/paper/scissor)\n 2. Enter your choice (rock/paper/scissor)\n 3. Exit\n')
         choice = input('Enter your choice (e.g. 1/2/3): ')
         prob_rock = 0.33
         prob_paper = 0.33
@@ -53,8 +61,18 @@ def main():
         if choice == '1':
             try:
                 prob_rock = float(input('Enter input for probability of getting a rock: '))
-                if 0 <= prob_rock <= 1:
-                    pass
+                prob_paper = float(input('Enter input for probability of getting a paper: '))
+                prob_scissor = float(input('Enter input for probability of gettng a scissor: '))
+                if 0 <= prob_rock <= 1 and 0 <= prob_paper <= 1 and 0 <= prob_scissor <= 1:
+                    try:
+                        user_input = input('Enter your input (Rock, Paper, Scissor): ')
+                        user_input.lower()
+                        if user_input != 'rock' and user_input != 'paper' and user_input != 'scissor':
+                            raise Exception
+                        else:
+                            rps(prob_rock, prob_paper, prob_scissor, user_input)
+                    except:
+                        print(f'{user_input} is not Rock/Paper/Scissor') 
                 else:
                     raise Exception
             except:
@@ -62,42 +80,21 @@ def main():
 
         elif choice == '2':
             try:
-                prob_paper = float(input('Enter input for probability of getting a paper: '))
-                if 0 <= prob_paper <= 1:
-                    pass
-                else:
-                    raise Exception
-            except:
-                print('Probability not within the specified range. Range is 0 to 1.')
-
-        elif choice == '3':
-            try:
-                prob_scissor = float(input('Enter input for probability of gettng a scissor: '))
-                if 0 <= prob_scissor <= 1:
-                    pass
-                else:
-                    raise Exception
-            except:
-                print('Probability not within the specified range. Range is 0 to 1.')
-
-        elif choice == '4':
-            try:
                 user_input = input('Enter your input (Rock, Paper, Scissor): ')
                 user_input.lower()
                 if user_input != 'rock' and user_input != 'paper' and user_input != 'scissor':
                     raise Exception
+                else:
+                    rps(prob_rock, prob_paper, prob_scissor, user_input)
             except:
-                print(f'{user_input} is not Rock/Paper/Scissor') 
+                print(f'{user_input} is not Rock/Paper/Scissor')
 
-        elif choice == '5':
+        elif choice == '3':
             print('Exiting...')
             break
 
         else:
-            print('Invalid input')
-
-        rps(prob_rock, prob_paper, prob_scissor, user_input)          
-
+            print('Invalid input')          
 
 if __name__ == '__main__':
     main()
